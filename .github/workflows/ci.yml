@@ -8,16 +8,16 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
-      - name: Build dockerpi:vm
-        run: docker build -t lukechilds/dockerpi:vm --target dockerpi-vm .
-      - name: Build dockerpi
-        run: docker build -t lukechilds/dockerpi:latest --target dockerpi .
+      - name: Build raspberry-pi:vm
+        run: docker build -t withdiode/raspberry-pi:vm --target raspberry-pi-vm .
+      - name: Build raspberry-pi
+        run: docker build -t withdiode/raspberry-pi:latest --target raspberry-pi .
       - name: Log image data
-        run: docker images lukechilds/dockerpi
+        run: docker images withdiode/raspberry-pi
       - name: Save image tarballs
         run: |
           mkdir -p images
-          images=$(docker images lukechilds/dockerpi --format "{{.Repository}}:{{.Tag}}")
+          images=$(docker images withdiode/raspberry-pi --format "{{.Repository}}:{{.Tag}}")
           for image in $images; do
             docker save $image | gzip > "images/$(echo $image | tr '/' '-' | tr ':' '-').tgz"
           done
@@ -43,8 +43,8 @@ jobs:
       - name: Load image tarballs
         run: for image in images/*; do docker load -i $image; done
       - name: Log image data
-        run: docker images lukechilds/dockerpi
+        run: docker images withdiode/raspberry-pi
       - name: Login to Docker Hub
-        run: echo "${{secrets.DOCKER_TOKEN}}" | docker login -u=lukechilds --password-stdin
+        run: echo "${{secrets.DOCKER_TOKEN}}" | docker login -u=withdiode --password-stdin
       - name: Push to Docker Hub
-        run: docker push --all-tags lukechilds/dockerpi
+        run: docker push --all-tags withdiode/raspberry-pi
