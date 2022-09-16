@@ -93,4 +93,4 @@ exec ${emulator} \
   --append "rw earlyprintk loglevel=8 console=ttyAMA0,115200 dwc_otg.lpm_enable=0 root=${root} rootwait panic=1 ${append}" \
   --no-reboot \
   --display none \
-  --serial mon:stdio,hostfwd=tcp::2222-:22
+  --serial mon:stdio
