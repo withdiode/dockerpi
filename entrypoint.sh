@@ -1,4 +1,4 @@
-#!/usr/bin/expect -f
+#!/bin/sh
 
 GIB_IN_BYTES="1073741824"
 
@@ -94,13 +94,3 @@ exec ${emulator} \
   --no-reboot \
   --display none \
   --serial mon:stdio
-  expect "raspberrypi login:"
-  send -- "pi\r"
-  expect "Password:"
-  send -- "raspberry\r"
-  expect "pi@raspberrypi:"
-  send -- "sudo systemctl enable ssh\r"
-  expect "pi@raspberrypi:"
-  send -- "sudo systemctl start ssh\r"
-  expect "pi@raspberrypi:"
-  expect eof
