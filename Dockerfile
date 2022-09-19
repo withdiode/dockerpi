@@ -40,6 +40,7 @@ RUN mkdir pack
 RUN cd pack && apt-cache depends -i screen | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download screen
 RUN cd pack && apt-cache depends -i libgcc-s1 | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download libgcc-s1
 RUN cd pack && apt-cache depends -i libaudit1 | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download libaudit1
+RUN cd pack && apt-cache depends -i debconf | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download debconf
 
 # Build stage for fatcat
 FROM debian:stable-slim AS fatcat-builder
