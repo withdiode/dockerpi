@@ -38,6 +38,7 @@ RUN strip "arm-softmmu/qemu-system-arm" "aarch64-softmmu/qemu-system-aarch64" "q
 # Get screen 
 RUN mkdir pack 
 RUN cd pack && apt-cache depends -i screen | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download screen
+RUN apt-cache depends -i libgcc-s1 | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download libgcc-s1
 
 # Build stage for fatcat
 FROM debian:stable-slim AS fatcat-builder
@@ -76,6 +77,9 @@ COPY --from=fatcat-builder /fatcat/fatcat /usr/local/bin/fatcat
 COPY --from=qemu-builder /qemu/pack /usr/pack
 
 ADD $RPI_KERNEL_URL /tmp/qemu-rpi-kernel.zip
+
+RUN mkdir -p /var/lib/dpkg
+RUN touch /var/lib/dpkg/status
 
 
 RUN cd /tmp && \
