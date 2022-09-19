@@ -35,6 +35,10 @@ RUN # Strip the binary, this gives a substantial size reduction!
 RUN strip "arm-softmmu/qemu-system-arm" "aarch64-softmmu/qemu-system-aarch64" "qemu-img"
 
 
+# Get screen 
+RUN mkdir pack 
+RUN cd pack && apt-cache depends -i screen | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download screen
+
 # Build stage for fatcat
 FROM debian:stable-slim AS fatcat-builder
 ARG FATCAT_VERSION=v1.1.0
@@ -60,7 +64,7 @@ RUN make -j$(nproc)
 
 
 # Build the dockerpi VM image
-FROM debian:stable-slim AS dockerpi-vm
+FROM busybox:1.31 AS dockerpi-vm
 LABEL maintainer="Luke Childs <lukechilds123@gmail.com>"
 ARG RPI_KERNEL_URL="https://github.com/dhruvvyas90/qemu-rpi-kernel/archive/afe411f2c9b04730bcc6b2168cdc9adca224227c.zip"
 ARG RPI_KERNEL_CHECKSUM="295a22f1cd49ab51b9e7192103ee7c917624b063cc5ca2e11434164638aad5f4"
@@ -71,6 +75,8 @@ COPY --from=qemu-builder /qemu/qemu-img /usr/local/bin/qemu-img
 COPY --from=fatcat-builder /fatcat/fatcat /usr/local/bin/fatcat
 
 ADD $RPI_KERNEL_URL /tmp/qemu-rpi-kernel.zip
+
+ADD /pack /pack
 
 RUN cd /tmp && \
     echo "$RPI_KERNEL_CHECKSUM  qemu-rpi-kernel.zip" | sha256sum -c && \
