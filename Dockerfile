@@ -37,10 +37,12 @@ RUN strip "arm-softmmu/qemu-system-arm" "aarch64-softmmu/qemu-system-aarch64" "q
 
 # Get screen 
 RUN mkdir pack 
-RUN cd pack && apt-cache depends -i screen | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download screen
-RUN cd pack && apt-cache depends -i libgcc-s1 | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download libgcc-s1
-RUN cd pack && apt-cache depends -i libaudit1 | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download libaudit1
-RUN cd pack && apt-cache depends -i debconf | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download debconf
+RUN cd pack && apt-get download $(apt-cache depends --recurse --no-recommends --no-suggests --no-conflicts --no-breaks --no-replaces --no-enhances screen | grep "^\w" | sort -u)
+# RUN cd pack && apt-cache depends -i screen | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download screen
+# RUN cd pack && apt-cache depends -i libgcc-s1 | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download libgcc-s1
+# RUN cd pack && apt-cache depends -i libaudit1 | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download libaudit1
+# RUN cd pack && apt-cache depends -i debconf | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download debconf
+# perl-base
 
 # Build stage for fatcat
 FROM debian:stable-slim AS fatcat-builder
