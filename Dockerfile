@@ -42,6 +42,7 @@ RUN cd pack && apt-get download $(apt-cache depends --recurse --no-recommends --
 # RUN cd pack && apt-cache depends -i libgcc-s1 | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download libgcc-s1
 # RUN cd pack && apt-cache depends -i libaudit1 | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download libaudit1
 # RUN cd pack && apt-cache depends -i debconf | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download debconf
+RUN cd pack && apt-cache depends -i perl-base | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download perl-base
 # perl-base
 
 # Build stage for fatcat
