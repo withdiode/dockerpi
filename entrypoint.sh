@@ -80,7 +80,6 @@ if [ "${kernel}" = "" ] || [ "${dtb}" = "" ]; then
   echo "Missing kernel='${kernel}' or dtb='${dtb}'"
   exit 2
 fi
-
 echo "Booting QEMU machine \"${machine}\" with kernel=${kernel} dtb=${dtb}"
 exec screen -S rPi
 exec ${emulator} \
