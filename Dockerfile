@@ -89,8 +89,6 @@ RUN cd /tmp && \
 VOLUME /sdcard
 
 ADD ./entrypoint.sh /entrypoint.sh
-RUN script /dev/null
-RUN screen -S rpi
 ENTRYPOINT ["./entrypoint.sh"]
 
 
