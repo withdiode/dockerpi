@@ -81,6 +81,7 @@ if [ "${kernel}" = "" ] || [ "${dtb}" = "" ]; then
   exit 2
 fi
 echo "Booting QEMU machine \"${machine}\" with kernel=${kernel} dtb=${dtb}"
+exec script /dev/null
 exec screen -S rPi
 exec ${emulator} \
   --machine "${machine}" \
