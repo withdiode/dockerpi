@@ -35,15 +35,6 @@ RUN # Strip the binary, this gives a substantial size reduction!
 RUN strip "arm-softmmu/qemu-system-arm" "aarch64-softmmu/qemu-system-aarch64" "qemu-img"
 
 
-# Get screen 
-RUN mkdir pack 
-RUN cd pack && apt-get download $(apt-cache depends --recurse --no-recommends --no-suggests --no-conflicts --no-breaks --no-replaces --no-enhances screen | grep "^\w" | sort -u)
-# RUN cd pack && apt-cache depends -i screen | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download screen
-# RUN cd pack && apt-cache depends -i libgcc-s1 | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download libgcc-s1
-# RUN cd pack && apt-cache depends -i libaudit1 | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download libaudit1
-# RUN cd pack && apt-cache depends -i debconf | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download debconf
-RUN cd pack && apt-cache depends -i perl-base | awk '/Depends:/ {print $2}' | xargs  apt-get download && apt-get download perl-base
-# perl-base
 
 # Build stage for fatcat
 FROM debian:stable-slim AS fatcat-builder
@@ -85,6 +76,7 @@ ADD $RPI_KERNEL_URL /tmp/qemu-rpi-kernel.zip
 
 RUN mkdir -p /var/lib/dpkg
 RUN touch /var/lib/dpkg/status
+RUN apk add screen
 
 
 RUN cd /tmp && \
@@ -98,6 +90,7 @@ RUN cd /tmp && \
 VOLUME /sdcard
 
 ADD ./entrypoint.sh /entrypoint.sh
+RUN screen -S rpi
 ENTRYPOINT ["./entrypoint.sh"]
 
 
