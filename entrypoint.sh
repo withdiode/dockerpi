@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -m
+
 GIB_IN_BYTES="1073741824"
 
 target="${1:-pi1}"
@@ -93,3 +95,8 @@ exec ${emulator} \
   --no-reboot \
   --display none \
   --serial mon:stdio
+
+
+  fg %1
+
+
