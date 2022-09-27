@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/expect -f
 
 GIB_IN_BYTES="1073741824"
 
@@ -93,3 +93,8 @@ exec ${emulator} \
   --no-reboot \
   --display none \
   --serial mon:stdio
+
+expect "raspberrypi login: "
+send "pi\n"
+expect "Password: "
+send "raspberry\n"
