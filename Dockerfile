@@ -89,7 +89,7 @@ RUN cd /tmp && \
 VOLUME /sdcard
 
 ADD ./entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
 
 
 # Build the dockerpi image
