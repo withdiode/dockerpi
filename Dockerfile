@@ -89,6 +89,7 @@ RUN cd /tmp && \
 VOLUME /sdcard
 
 ADD ./entrypoint.sh /entrypoint.sh
+ADD ./rpi.sh /rpi.sh
 ENTRYPOINT ["tail", "-f", "/dev/null"]
 
 
