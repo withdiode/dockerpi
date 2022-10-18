@@ -76,6 +76,7 @@ ADD $RPI_KERNEL_URL /tmp/qemu-rpi-kernel.zip
 RUN mkdir -p /var/lib/dpkg
 RUN touch /var/lib/dpkg/status
 RUN apk add expect
+RUN apk add websocketd
 
 
 RUN cd /tmp && \
