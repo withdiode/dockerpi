@@ -1,6 +1,5 @@
 #!/bin/sh
 
-set -m
 
 GIB_IN_BYTES="1073741824"
 
@@ -97,6 +96,5 @@ exec ${emulator} \
   --serial mon:stdio
 
 
-  fg %1
 
 
