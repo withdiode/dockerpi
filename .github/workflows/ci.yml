@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v1
-      - name: Build dockerpi:vm
-        run: docker build -t withdiode/dockerpi:vm --target dockerpi-vm .
+      # - name: Build dockerpi:vm
+      #   run: docker build -t withdiode/dockerpi:vm --target dockerpi-vm .
       - name: Build dockerpi
         run: docker build -t withdiode/dockerpi:latest --target dockerpi .
       - name: Log image data

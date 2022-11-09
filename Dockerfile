@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:latest as dockerpi
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
 
