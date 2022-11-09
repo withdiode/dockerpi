@@ -47,28 +47,28 @@ ENTRYPOINT ["tail", "-f", "/dev/null"]
 
 
 
-# # Build stage for fatcat
-# FROM debian:stable-slim AS fatcat-builder
-# ARG FATCAT_VERSION=v1.1.0
-# ARG FATCAT_CHECKSUM="303efe2aa73cbfe6fbc5d8af346d0f2c70b3f996fc891e8859213a58b95ad88c"
-# ENV FATCAT_TARBALL="${FATCAT_VERSION}.tar.gz"
-# WORKDIR /fatcat
+# Build stage for fatcat
+FROM debian:stable-slim AS fatcat-builder
+ARG FATCAT_VERSION=v1.1.0
+ARG FATCAT_CHECKSUM="303efe2aa73cbfe6fbc5d8af346d0f2c70b3f996fc891e8859213a58b95ad88c"
+ENV FATCAT_TARBALL="${FATCAT_VERSION}.tar.gz"
+WORKDIR /fatcat
 
-# RUN # Update package lists
-# RUN apt-get update
+RUN # Update package lists
+RUN apt-get update
 
-# RUN # Pull source
-# RUN apt-get -y install wget
-# RUN wget "https://github.com/Gregwar/fatcat/archive/${FATCAT_TARBALL}"
-# RUN echo "${FATCAT_CHECKSUM} ${FATCAT_TARBALL}" | sha256sum --check
+RUN # Pull source
+RUN apt-get -y install wget
+RUN wget "https://github.com/Gregwar/fatcat/archive/${FATCAT_TARBALL}"
+RUN echo "${FATCAT_CHECKSUM} ${FATCAT_TARBALL}" | sha256sum --check
 
-# RUN # Extract source tarball
-# RUN tar xvf "${FATCAT_TARBALL}"
+RUN # Extract source tarball
+RUN tar xvf "${FATCAT_TARBALL}"
 
-# RUN # Build source
-# RUN apt-get -y install build-essential cmake
-# RUN cmake fatcat-* -DCMAKE_CXX_FLAGS='-static'
-# RUN make -j$(nproc)
+RUN # Build source
+RUN apt-get -y install build-essential cmake
+RUN cmake fatcat-* -DCMAKE_CXX_FLAGS='-static'
+RUN make -j$(nproc)
 
 
 # # Build the dockerpi VM image
