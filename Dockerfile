@@ -36,16 +36,6 @@ RUN # Strip the binary, this gives a substantial size reduction!
 RUN strip "arm-softmmu/qemu-system-arm" "aarch64-softmmu/qemu-system-aarch64" "qemu-img"
 
 
-FROM ubuntu:latest as dockerpi
-
-COPY --from=qemu-builder /qemu/arm-softmmu/qemu-system-arm /usr/local/bin/qemu-system-arm
-COPY --from=qemu-builder /qemu/aarch64-softmmu/qemu-system-aarch64 /usr/local/bin/qemu-system-aarch64
-COPY --from=qemu-builder /qemu/qemu-img /usr/local/bin/qemu-img
-COPY --from=fatcat-builder /fatcat/fatcat /usr/local/bin/fatcat
-
-ENTRYPOINT ["tail", "-f", "/dev/null"]
-
-
 
 # Build stage for fatcat
 FROM debian:stable-slim AS fatcat-builder
@@ -69,6 +59,19 @@ RUN # Build source
 RUN apt-get -y install build-essential cmake
 RUN cmake fatcat-* -DCMAKE_CXX_FLAGS='-static'
 RUN make -j$(nproc)
+
+
+FROM ubuntu:latest as dockerpi
+
+COPY --from=qemu-builder /qemu/arm-softmmu/qemu-system-arm /usr/local/bin/qemu-system-arm
+COPY --from=qemu-builder /qemu/aarch64-softmmu/qemu-system-aarch64 /usr/local/bin/qemu-system-aarch64
+COPY --from=qemu-builder /qemu/qemu-img /usr/local/bin/qemu-img
+COPY --from=fatcat-builder /fatcat/fatcat /usr/local/bin/fatcat
+
+ENTRYPOINT ["tail", "-f", "/dev/null"]
+
+
+
 
 
 # # Build the dockerpi VM image
