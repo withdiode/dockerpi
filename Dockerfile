@@ -69,7 +69,7 @@ COPY --from=qemu-builder /qemu/qemu-img /usr/local/bin/qemu-img
 COPY --from=fatcat-builder /fatcat/fatcat /usr/local/bin/fatcat
 RUN apt-get update -y
 RUN apt-get install -y qemu-system-avr
-RUN apt-get curl -y
+RUN apt-get install -y curl 
 RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
